@@ -58,16 +58,16 @@ export default function MatchPage() {
         </div>
       )}
 
-      <div className="w-full max-w-md text-center relative z-10">
+      <div className="w-full max-w-md text-center relative z-10 px-2">
         <p
-          className="label mb-5 transition-opacity duration-500"
+          className="label mb-4 sm:mb-5 transition-opacity duration-500"
           style={{ opacity: revealed ? 1 : 0 }}
         >
           {userName}, your match is
         </p>
 
         <h1
-          className="font-display text-6xl sm:text-7xl font-bold text-[var(--text)] tracking-tight mb-12"
+          className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-[var(--text)] tracking-tight mb-8 sm:mb-12 break-words"
           style={{
             animation: revealed ? "reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards" : "none",
             opacity: revealed ? undefined : 0,
@@ -92,7 +92,7 @@ export default function MatchPage() {
         </div>
 
         <p
-          className="mt-12 text-xs font-mono text-[var(--text-muted)] transition-opacity duration-500"
+          className="mt-8 sm:mt-12 text-xs font-mono text-[var(--text-muted)] transition-opacity duration-500"
           style={{ opacity: revealed ? 1 : 0, transitionDelay: "0.6s" }}
         >
           cosine similarity in embedding space

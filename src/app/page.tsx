@@ -38,13 +38,13 @@ export default function Home() {
       <div className="max-w-lg">
         <p className="label mb-5 animate-fade-up">Neural Personality Matching</p>
 
-        <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[0.95] text-[var(--text)] mb-6 animate-fade-up d1">
+        <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[0.95] text-[var(--text)] mb-5 sm:mb-6 animate-fade-up d1">
           Find your
           <br />
           closest match.
         </h1>
 
-        <p className="text-[var(--text-secondary)] text-lg leading-relaxed max-w-md mb-12 animate-fade-up d2">
+        <p className="text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed max-w-md mb-10 sm:mb-12 animate-fade-up d2">
           Answer five questions. Your responses are encoded into a
           high-dimensional vector. AI finds the person nearest to you
           in embedding space.
@@ -74,7 +74,7 @@ export default function Home() {
           <p className="mt-3 text-[var(--red)] text-sm animate-fade-in">{error}</p>
         )}
 
-        <p className="mt-16 text-xs font-mono text-[var(--text-muted)] tracking-wide animate-fade-up d5">
+        <p className="mt-10 sm:mt-16 text-xs font-mono text-[var(--text-muted)] tracking-wide animate-fade-up d5">
           GPT-4o &middot; text-embedding-3-small &middot; cosine similarity
         </p>
       </div>
