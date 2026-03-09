@@ -52,7 +52,6 @@ export default function Dashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [points, setPoints] = useState<EmbeddingPoint[]>([]);
   const [matchLines, setMatchLines] = useState<MatchLine[]>([]);
-  const [matches, setMatches] = useState<MatchResult[]>([]);
   const [matching, setMatching] = useState(false);
   const [appUrl, setAppUrl] = useState("");
   const [autoRotate, setAutoRotate] = useState(true);
@@ -61,7 +60,6 @@ export default function Dashboard() {
   useEffect(() => { setAppUrl(window.location.origin); }, []);
 
   const displayMatches = useMemo(() => {
-    if (matches.length > 0) return matches;
     const matched = users.filter((u) => u.status === "matched" && u.matchId && u.matchExplanation);
     const seen = new Set<string>();
     const result: MatchResult[] = [];
@@ -72,8 +70,8 @@ export default function Dashboard() {
       seen.add(user.id); seen.add(partner.id);
       result.push({ user1Name: user.name, user2Name: partner.name, similarity: 0, explanation: user.matchExplanation || "" });
     }
-    return result;
-  }, [matches, users]);
+    return result.sort((a, b) => a.user1Name.localeCompare(b.user1Name));
+  }, [users]);
 
   const fetchData = useCallback(async () => {
     try {
@@ -94,9 +92,7 @@ export default function Dashboard() {
   async function runMatching() {
     setMatching(true);
     try {
-      const res = await fetch("/api/match", { method: "POST" });
-      const data = await res.json();
-      if (data.matches) setMatches(data.matches);
+      await fetch("/api/match", { method: "POST" });
       await fetchData();
     } catch { alert("Matching failed"); }
     finally { setMatching(false); }
@@ -105,12 +101,15 @@ export default function Dashboard() {
   async function resetSession() {
     if (!confirm("Delete all users and data?")) return;
     await fetch("/api/users", { method: "DELETE" });
-    setUsers([]); setPoints([]); setMatchLines([]); setMatches([]);
+    setUsers([]); setPoints([]); setMatchLines([]);
     await fetchData();
   }
 
   const completedCount = users.filter((u) => u.status === "completed" || u.status === "matched").length;
-  const sortedUsers = [...users].sort((a, b) => ({ matched: 0, completed: 1, chatting: 2 })[a.status] - ({ matched: 0, completed: 1, chatting: 2 })[b.status]);
+  const sortedUsers = [...users].sort((a, b) => {
+    const statusOrder = ({ matched: 0, completed: 1, chatting: 2 })[a.status] - ({ matched: 0, completed: 1, chatting: 2 })[b.status];
+    return statusOrder !== 0 ? statusOrder : a.name.localeCompare(b.name);
+  });
 
   return (
     <main className="h-[100dvh] flex flex-col overflow-hidden">
